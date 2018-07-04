@@ -1,8 +1,9 @@
 #!/bin/sh
 
 echo "Removing unused containers"
-docker rm $(docker ps -qa --no-trunc --filter "status=exited")
+containers=$(docker ps -qa --no-trunc --filter "status=exited")
+[ ! -z "$containers" ] && docker rm "$containers"
 
 echo "Removing unused images"
-docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-
+images=$(docker images --filter "dangling=true" -q --no-trunc)
+[ ! -z "$images" ] && docker rmi "$images"
